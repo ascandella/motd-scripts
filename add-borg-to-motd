@@ -25,7 +25,7 @@ BORG_OUT="/tmp/borg.latest"
 if [[ -r "${BORG_OUT}" ]] ; then
   echo
   echo -en "\e[48;5;244"
-  cat "${BORG_OUT}"
+  cat "${BORG_OUT}" | /root/bin/borg-extract
   echo -en "\e[0m"
   echo
 fi
