@@ -1,0 +1,75 @@
+#!/bin/bash
+# from: https://github.com/knotman90/config_files/blob/master/dynmotd
+
+# Installation:
+#
+# 1.   vim /etc/ssh/sshd_config
+#      PrintMotd no
+#
+# 2.   vim /etc/pam.d/login
+#      # session optional pam_motd.so
+#
+# 3.   vim /etc/profile
+#      /usr/local/bin/dynmotd # Place at the bottom
+#
+# 4.   Then of course drop this file at
+#      /usr/local/bin/dynmotd
+# #requires fortune cowsay, lm_sensors
+
+USER=$(whoami)
+HOSTNAME=$(uname -n)
+#IP=$(hostname -i)
+#HOME=$(df -Ph | grep home | awk '{print $4}' | tr -d '\n')
+#BACKUP=$(df -Ph | grep backup | awk '{print $4}' | tr -d '\n')
+NUM_UNIQUE_USERS=$(users | tr ' ' '\n' | sort | uniq | wc -w)
+#MEMORY=$(free -m | grep "Mem" | awk '{print $2,"-",$3,"-",$4}')
+#SWAP=$(free -m | grep "Swap" | awk '{print $2,"-",$3,"-",$4}')
+PSA="$(ps -Afl | wc -l)"
+TEMPERATURE="$(sensors -f | grep Core | awk {'print $3'} | xargs)"
+
+#weather
+#URL='http://www.accuweather.com/en/gb/edinburgh/eh1-3/weather-forecast/327336'
+#WEATHER=$(wget -q -O- --timeout=2 "$URL" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $2": "$16", "$12"°" }'| head -1)
+
+#System uptime
+uptime=$(cat /proc/uptime | cut -f1 -d.)
+upDays=$(expr $uptime / 60 / 60 / 24)
+upHours=$(expr $uptime / 60 / 60 % 24)
+upMins=$(expr $uptime / 60 % 60)
+upSecs=$(expr $uptime % 60)
+
+#System load
+LOAD=$(awk {'print $1, $2, $3'} /proc/loadavg)
+
+COLOR_COLUMN="\e[1m-"
+COLOR_YELLOW="\e[93m"
+COLOR_BOLD="\e[1m"
+COLOR_GREEN="\e[92m"
+COLOR_BLUE="\e[36m"  # actually cyan
+RESET_COLORS="\e[0m"
+
+# Get dat sweet, sweet logo
+if command -v screenfetch >/dev/null ; then
+  screenfetch -L
+fi
+
+echo -e "
+ $COLOR_COLUMN- Hostname$RESET_COLORS            $COLOR_BLUE $HOSTNAME $RESET_COLORS
+ $COLOR_COLUMN- CPU usage$RESET_COLORS           ${COLOR_BLUE} ${LOAD} $RESET_COLORS
+ $COLOR_COLUMN- Cores Temperature$RESET_COLORS   ${COLOR_YELLOW}${COLOR_BOLD} $TEMPERATURE $RESET_COLORS
+ $COLOR_COLUMN- Processes$RESET_COLORS           $COLOR_BLUE $PSA running $RESET_COLORS
+ $COLOR_COLUMN- System uptime$RESET_COLORS       $COLOR_BLUE $upDays days $upHours hours $upMins minutes $upSecs seconds $RESET_COLORS
+"
+# $COLOR_COLUMN- Disk space HOME$RESET_COLORS.....$COLOR_RED $HOME remaining $RESET_COLORS
+# $COLOR_COLUMN- Current user$RESET_COLORS        ${COLOR_GREEN} $USER $RESET_COLORS
+# $COLOR_COLUMN- Users$RESET_COLORS               $COLOR_BLUE Currently ${COLOR_BOLD}${NUM_UNIQUE_USERS}${COLOR_RESET}${COLOR_BLUE} user(s) logged on $RESET_COLORS
+# $COLOR_COLUMN- Release$RESET_COLORS.............$COLOR_RED `cat /etc/redhat-release` $RESET_COLORS
+
+ #$COLOR_COLUMN- Memory used$RESET_COLORS.........: $COLOR_RED $MEMORY (total-free-used) $RESET_COLORS
+ #$COLOR_COLUMN- Swap in use$RESET_COLORS.........: $COLOR_RED $SWAP (total-used-free) MB $RESET_COLORS
+ #$COLOR_COLUMN- IP Address$RESET_COLORS..........: $COLOR_BLUE $IP $RESET_COLORS
+
+BORG_SCRIPT='/etc/dynamic-motd/add-borg-to-motd'
+if [[ -x "${BORG_SCRIPT}" ]] ; then
+  $BORG_SCRIPT
+fi

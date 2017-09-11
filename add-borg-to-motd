@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+source /root/.borg
+
+set +e
+BORG_OUTPUT=$(/bin/borg list --prefix $(hostname) $REPOSITORY | tail -n 3)
+SALL_GOOD=$?
+set +e
+
+
+if [[ $SALL_GOOD -eq 0 ]] ; then
+  echo "Latest backups:"
+  echo -ne "\e[94m"
+  echo -e "$BORG_OUTPUT"
+  echo -ne "\e[0m"
+  [[ "${SALL_GOOD}" -eq 0 ]] || exit "${SALL_GOOD}"
+else
+  echo "Unable to query backups"
+  exit 1
+fi
+
+BORG_OUT="/tmp/borg.latest"
+if [[ -r "${BORG_OUT}" ]] ; then
+  echo
+  echo -en "\e[48;5;244"
+  cat "${BORG_OUT}"
+  echo -en "\e[0m"
+  echo
+fi

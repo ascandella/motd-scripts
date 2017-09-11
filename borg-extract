@@ -1,0 +1,79 @@
+#!/bin/bash
+
+INFILE="${1}"
+if [[ ! -e "${INFILE}" ]] ; then
+  if [[ "${INFILE}" == "-" ]] ; then
+    INFILE="/dev/stdin"
+  else
+    echo "Need an input file to process"
+    exit 1
+  fi
+fi
+
+# get rid of some dumb shit
+worth_displaying() {
+  if [[ "${1}" =~ fingerprint ]] ; then
+    return 1
+  fi
+  if [[ "${1}" =~ hunk ]] ; then
+    return 1
+  fi
+  return 0
+}
+
+display_color() {
+  if [[ "${1}" =~ size ]] ; then
+    echo -ne "\e[48;5;31m"
+  fi
+  return
+}
+
+has_colon() {
+  if [[ "${1}" =~ [:] ]] ; then
+    return 0
+  fi
+  return 1
+}
+
+
+RESET_COLOR="\e[0m"
+
+DASHCOUNT=0
+TABLETIME=0
+WEREDOINGITLIVE=0
+ISDASH=0
+while read line ; do
+  if [[ "${line}" =~ ^--- ]] ; then
+    ISDASH=1
+    ((DASHCOUNT++))
+    # we hit our first important thing
+    WEREDOINGITLIVE=1
+    case ${DASHCOUNT} in
+      1) TABLETIME=1 ;;
+      2) SUMMARYTIME=1 ;;
+      3) WEREDOINGITLIVE=0 ;;  # we're done
+      *) TABLETIME=0 ; SUMMARYTIME=0 ;;  # these shouldn't happen
+    esac
+  else
+    ISDASH=
+  fi
+
+  if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
+    if ((${ISDASH})) ; then
+      echo
+      echo
+    else
+      if worth_displaying "${line}" ; then
+				#if has_colon "${line}" ; then
+          ## dark magick
+					#IFS=$':'; lineParts=(${line}); unset IFS;
+
+          #printf "%-20s" "${lineParts[0]}"
+					#printf "%-10s" "${lineParts[1]}"
+				#fi
+        color="$(display_color "${line}")"
+        echo -e "${color}${line}${RESET_COLOR}"
+      fi
+    fi
+  fi
+done < "${INFILE}"
