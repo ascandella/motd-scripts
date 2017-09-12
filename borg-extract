@@ -13,6 +13,14 @@ if [[ ! -e "${INFILE}" ]] ; then
   fi
 fi
 
+max() {
+  if [ "$2" -gt "$1" ]; then
+    echo "$1"
+  else
+    echo "$2"
+  fi
+}
+
 # get rid of some dumb shit
 worth_displaying() {
   if [[ "${1}" =~ fingerprint ]] ; then
@@ -26,9 +34,7 @@ worth_displaying() {
 
 display_color() {
   if [[ "${1}" =~ size ]] ; then
-    # bloo
     echo -ne "\e[48;5;31m"
-    # bold
     echo -ne "${BOLD}"
   fi
   return
@@ -47,6 +53,9 @@ DASHCOUNT=0
 TABLETIME=0
 WEREDOINGITLIVE=0
 ISDASH=0
+
+HIGHSCORE=1
+
 while IFS='' read line ; do
   if [[ "${line}" =~ ^--- ]] ; then
     ISDASH=1
@@ -67,13 +76,14 @@ while IFS='' read line ; do
       echo
     else
       if worth_displaying "${line}" ; then
-        #if has_colon "${line}" ; then
+        if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
           ## dark magick
-          #IFS=$':'; lineParts=(${line}); unset IFS;
-
-          #printf "%-20s" "${lineParts[0]}"
-          #printf "%-10s" "${lineParts[1]}"
-        #fi
+          first="$(echo "${line}" | cut -d':' -f1)"
+          rest="$(echo "${line}" | cut -d':' -f2-)"
+          charcount="$(echo "${first}" | wc -c)"
+          HIGHSCORE="$(max ${charcount} ${HIGHSCORE})"
+          printf "%20s %20s" "${first}" "${second}"
+        fi
         color="$(display_color "${line}")"
         say_color "${color}" "${line}"
       fi
