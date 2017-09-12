@@ -4,10 +4,15 @@ set -e
 THISDIR="$(dirname "$(readlink -f "$0")")"
 source "${THISDIR}/common"
 
-source /root/.borg
+source '/root/.borg'
 
 set +e
-BORG_OUTPUT="$("${BORG}" list --prefix "$(hostname)" ${REPOSITORY} | tail -n 3)"
+BORG_OUTPUT="$("${BORG}" \
+  list \
+  --prefix "$(hostname)" \
+  --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
+  ${REPOSITORY} | \
+  tail -n 3)"
 SALL_GOOD=$?
 set -e
 
@@ -15,7 +20,7 @@ if [[ $SALL_GOOD -eq 0 ]] ; then
   header "Latest Backups"
   echo "${BORG_OUTPUT}"
 else
-  say_color "\e[41m" "Unable to query backups"
+  say_color "\e[41m" 'Unable to query backups'
   exit "${SALL_GOOD}"
 fi
 

@@ -15,7 +15,7 @@ say_color() {
 }
 
 header() {
-  echo -e "${1}" #| tr -s "${HEADER_COLOR}[ ]"
+  echo -e "${HEADER_COLOR}${1}${RESET_TEXT}"
 }
 
 reset_color() {
