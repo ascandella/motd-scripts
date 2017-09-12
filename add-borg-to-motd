@@ -4,28 +4,29 @@ set -e
 
 source /root/.borg
 
-set +e
-BORG_OUTPUT=$(/bin/borg list --prefix $(hostname) $REPOSITORY | tail -n 3)
-SALL_GOOD=$?
-set +e
+THISDIR="$(dirname "$(readlink -f "$0")")"
 
+set +e
+BORG_OUTPUT="$(borg list --prefix "$(hostname)" $REPOSITORY | tail -n 3)"
+SALL_GOOD=$?
+set -e
+
+RESET="\e[0m"
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
   echo "Latest backups:"
   echo -ne "\e[94m"
-  echo -e "$BORG_OUTPUT"
-  echo -ne "\e[0m"
-  [[ "${SALL_GOOD}" -eq 0 ]] || exit "${SALL_GOOD}"
+  echo -e "${BORG_OUTPUT}${RESET}"
 else
+  echo -ne "\e[41m"
   echo "Unable to query backups"
-  exit 1
+  exit "${SALL_GOOD}"
 fi
 
 BORG_OUT="/tmp/borg.latest"
+EXTRACT="${THISDIR}/borg-extract"
 if [[ -r "${BORG_OUT}" ]] ; then
-  echo
-  echo -en "\e[48;5;244"
-  cat "${BORG_OUT}" | /root/bin/borg-extract
-  echo -en "\e[0m"
-  echo
+  echo -ne "\e[48;5;244m"
+  "${EXTRACT}" "${BORG_OUT}"
+  echo -e "${RESET}"
 fi
