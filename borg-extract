@@ -1,5 +1,8 @@
 #!/bin/bash
 
+THISDIR="$(dirname "$(readlink -f "$0")")"
+source "${THISDIR}/common"
+
 INFILE="${1}"
 if [[ ! -e "${INFILE}" ]] ; then
   if [[ "${INFILE}" == "-" ]] ; then
@@ -69,7 +72,7 @@ while IFS='' read line ; do
 					#printf "%-10s" "${lineParts[1]}"
 				#fi
         color="$(display_color "${line}")"
-        echo -e "${color}${line}${RESET_COLOR}"
+        say_color "${color}" "${line}"
       fi
     fi
   fi

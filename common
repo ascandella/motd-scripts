@@ -1,0 +1,23 @@
+THISDIR="$(dirname "$(readlink -f "$0")")"
+
+# Paths
+export BORG_OUT='/tmp/borg.latest'
+export EXTRACT="${THISDIR}/borg-extract"
+export BORG="borg"
+
+# Colors
+export RESET_TEXT="\e[0m"
+export HEADER_COLOR="\e[48;5;237m"
+
+
+say_color() {
+  echo -e "${1}${2}${RESET_TEXT}"
+}
+
+header() {
+  say_color "${HEADER_COLOR}" "${1}"
+}
+
+reset_color() {
+  echo -ne "${RESET_TEXT}"
+}
