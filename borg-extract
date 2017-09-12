@@ -64,13 +64,13 @@ while IFS='' read line ; do
       echo
     else
       if worth_displaying "${line}" ; then
-				#if has_colon "${line}" ; then
+        #if has_colon "${line}" ; then
           ## dark magick
-					#IFS=$':'; lineParts=(${line}); unset IFS;
+          #IFS=$':'; lineParts=(${line}); unset IFS;
 
           #printf "%-20s" "${lineParts[0]}"
-					#printf "%-10s" "${lineParts[1]}"
-				#fi
+          #printf "%-10s" "${lineParts[1]}"
+        #fi
         color="$(display_color "${line}")"
         say_color "${color}" "${line}"
       fi
