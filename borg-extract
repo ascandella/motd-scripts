@@ -42,7 +42,7 @@ DASHCOUNT=0
 TABLETIME=0
 WEREDOINGITLIVE=0
 ISDASH=0
-while read line ; do
+while IFS='' read line ; do
   if [[ "${line}" =~ ^--- ]] ; then
     ISDASH=1
     ((DASHCOUNT++))
@@ -51,7 +51,7 @@ while read line ; do
     case ${DASHCOUNT} in
       1) TABLETIME=1 ;;
       2) SUMMARYTIME=1 ;;
-      3) WEREDOINGITLIVE=0 ;;  # we're done
+      3) exit 0 ;;
       *) TABLETIME=0 ; SUMMARYTIME=0 ;;  # these shouldn't happen
     esac
   else

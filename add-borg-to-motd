@@ -14,7 +14,8 @@ set -e
 RESET="\e[0m"
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
-  echo "Latest backups:"
+  echo "Latest Backups"
+  echo
   echo -ne "\e[94m"
   echo -e "${BORG_OUTPUT}${RESET}"
 else
