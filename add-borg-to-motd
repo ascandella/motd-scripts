@@ -12,12 +12,15 @@ SALL_GOOD=$?
 set -e
 
 RESET="\e[0m"
+HEADER_COLOR="\e[48;5;237m"
+
+header() {
+  echo -e "${HEADER_COLOR}${1}${RESET}"
+}
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
-  echo "Latest Backups"
-  echo
-  echo -ne "\e[94m"
-  echo -e "${BORG_OUTPUT}${RESET}"
+  header "Latest Backups"
+  echo "${BORG_OUTPUT}"
 else
   echo -ne "\e[41m"
   echo "Unable to query backups"
@@ -27,7 +30,7 @@ fi
 BORG_OUT="/tmp/borg.latest"
 EXTRACT="${THISDIR}/borg-extract"
 if [[ -r "${BORG_OUT}" ]] ; then
-  echo -ne "\e[48;5;244m"
+  echo -ne "${HEADER_COLOR}"
   "${EXTRACT}" "${BORG_OUT}"
-  echo -e "${RESET}"
+  echo -ne "${RESET}"
 fi
