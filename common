@@ -8,14 +8,14 @@ export BORG="borg"
 # Colors
 export RESET_TEXT="\e[0m"
 export HEADER_COLOR="\e[48;5;237m"
-
+export BORTD="\e[1m"
 
 say_color() {
   echo -e "${1}${2}${RESET_TEXT}"
 }
 
 header() {
-  say_color "${HEADER_COLOR}" "${1}"
+  echo -e "${1}" #| tr -s "${HEADER_COLOR}[ ]"
 }
 
 reset_color() {

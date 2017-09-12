@@ -26,7 +26,10 @@ worth_displaying() {
 
 display_color() {
   if [[ "${1}" =~ size ]] ; then
+    # bloo
     echo -ne "\e[48;5;31m"
+    # bold
+    echo -ne "${BOLD}"
   fi
   return
 }
