@@ -3,6 +3,7 @@
 set -eu
 set -o pipefail
 THISDIR="$(dirname "$(readlink -f "$0")")"
+# shellcheck source=./common
 source "${THISDIR}/common"
 
 # Vars
@@ -55,7 +56,7 @@ has_colon() {
 }
 
 trim_whitespace() {
-  echo "$(echo -e "${1}" | tr -d [:space]:)"
+  echo -e "${1}" | tr -d '[:blank:]'
 }
 
 while IFS='' read -r line ; do

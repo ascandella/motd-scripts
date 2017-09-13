@@ -18,6 +18,7 @@
 
 set -e
 THISDIR="$(dirname "$(readlink -f "$0")")"
+# shellcheck source=./common
 source "${THISDIR}/common"
 
 USER="$(whoami)"
@@ -29,21 +30,21 @@ NUM_UNIQUE_USERS="$(users | tr ' ' '\n' | sort | uniq | wc -w)"
 #MEMORY="$(free -m | grep "Mem" | awk '{print $2,"-",$3,"-",$4}')"
 #SWAP=$(free -m | grep "Swap" | awk '{print $2,"-",$3,"-",$4}')
 PSA="$(ps -Afl | wc -l)"
-TEMPERATURE="$(sensors -f | grep Core | awk {'print $3'} | xargs)"
+TEMPERATURE="$(sensors -f | grep Core | awk '{print $3}' | xargs)"
 
 #weather
 #URL='http://www.accuweather.com/en/gb/edinburgh/eh1-3/weather-forecast/327336'
 #WEATHER=$(wget -q -O- --timeout=2 "$URL" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $2": "$16", "$12"°" }'| head -1)
 
-#System uptime
-uptime="$(cat /proc/uptime | cut -f1 -d.)"
-upDays="$(expr $uptime / 60 / 60 / 24)"
-upHours="$(expr $uptime / 60 / 60 % 24)"
-upMins="$(expr $uptime / 60 % 60)"
-upSecs=i"$(expr $uptime % 60)"
+# System uptime
+uptime="$(cut -f1 -d. < /proc/uptime)"
+upDays="$((uptime / 60 / 60 / 24))"
+upHours="$((uptime / 60 / 60 % 24))"
+upMins="$((uptime / 60 % 60))"
+upSecs=i"$((uptime % 60))"
 
-#System load
-LOAD="$(awk {'print $1, $2, $3'} /proc/loadavg)"
+# System load
+LOAD="$(awk '{print $1, $2, $3}' /proc/loadavg)"
 
 # Get dat sweet, sweet logo
 if command -v screenfetch >/dev/null ; then

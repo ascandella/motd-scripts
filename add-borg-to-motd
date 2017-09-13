@@ -3,9 +3,11 @@
 set -e
 # Shared code
 THISDIR="$(dirname "$(readlink -f "$0")")"
+# shellcheck source=./common
 source "${THISDIR}/common"
 
 # Secret keys
+# shellcheck source=/dev/null
 source '/root/.borg'
 NUM_OUTPUTS=3
 
@@ -14,7 +16,7 @@ BORG_OUTPUT="$("${BORG}" \
   list \
   --prefix "${HOSTNAME}" \
   --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
-  ${REPOSITORY} | \
+  "${REPOSITORY}" | \
   tail -n "${NUM_OUTPUTS}")"
 SALL_GOOD=$?
 set -e
