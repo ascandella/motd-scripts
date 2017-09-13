@@ -1,9 +1,16 @@
 #!/bin/bash
 
+set -eu
+set -o pipefail
 THISDIR="$(dirname "$(readlink -f "$0")")"
 source "${THISDIR}/common"
 
-INFILE="${1}"
+# Vars
+DASHCOUNT=0
+TABLETIME=0
+WEREDOINGITLIVE=0
+
+INFILE="${1-}"
 if [[ ! -e "${INFILE}" ]] ; then
   if [[ "${INFILE}" == "-" ]] ; then
     INFILE="/dev/stdin"
@@ -13,6 +20,7 @@ if [[ ! -e "${INFILE}" ]] ; then
   fi
 fi
 
+# Functions
 max() {
   if [ "$2" -gt "$1" ]; then
     echo "$1"
@@ -46,18 +54,18 @@ has_colon() {
   return 1
 }
 
-DASHCOUNT=0
-TABLETIME=0
-WEREDOINGITLIVE=0
+trim_whitespace() {
+  echo "$(echo -e "${1}" | tr -d [:space]:)"
+}
 
 while IFS='' read -r line ; do
   if [[ "${line}" =~ ^--- ]] ; then
-    ((DASHCOUNT++))
+    ((DASHCOUNT++)) || true
     # we hit our first important thing
     WEREDOINGITLIVE=1
     case ${DASHCOUNT} in
       1) TABLETIME=1 ;;
-      2) ;;
+      2) TABLETIME=0;;
       *) exit 0 ;;
     esac
     echo
@@ -68,11 +76,13 @@ while IFS='' read -r line ; do
     if worth_displaying "${line}" ; then
       if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
         first="$(echo "${line}" | cut -d':' -f1)"
-        rest="$(echo "${line}" | cut -d':' -f2-)"
-        printf "%-20s %s\n" "${first}" "${rest}"
+        rest="$(echo "${line}" | cut -d':' -f2- | sed 's/^[ ]\+//')"
+        printf "%-20s" "${first}"
+        say_color "${COLOR_BOLD}" "${rest}"
+      else
+        color="$(display_color "${line}")"
+        say_color "${color}" "${line}"
       fi
-      color="$(display_color "${line}")"
-      say_color "${color}" "${line}"
     fi
   fi
 done < "${INFILE}"
