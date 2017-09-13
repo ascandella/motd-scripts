@@ -58,7 +58,7 @@ has_delim() {
 }
 
 trim_whitespace() {
-  echo -e "${1}" | tr -d [:space:]
+  echo -e "${1}" | tr -d '[:space:]'
 }
 
 # TODO
