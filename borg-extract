@@ -60,7 +60,6 @@ while IFS='' read line ; do
     WEREDOINGITLIVE=1
     case ${DASHCOUNT} in
       1) TABLETIME=1 ;;
-      2) SUMMARYTIME=1 ;;
       *) exit 0 ;;
     esac
     echo
@@ -72,7 +71,7 @@ while IFS='' read line ; do
       if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
         first="$(echo "${line}" | cut -d':' -f1)"
         rest="$(echo "${line}" | cut -d':' -f2-)"
-        printf "%-20s %-20s\n" "${first}" "${second}"
+        printf "%-20s %s\n" "${first}" "${second}"
       fi
       color="$(display_color "${line}")"
       say_color "${color}" "${line}"
