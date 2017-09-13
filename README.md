@@ -2,6 +2,8 @@
 
 Note: I run Fedora 26. These scripts may or may not be useful on other distros.
 
+![screenshot](https://raw.githubusercontent.com/sectioneight/motd-scripts/screenshots/img/motd.png)
+
 ## Backups
 
 I use [Borg] to back up securely from my personal server to my Synology. This
