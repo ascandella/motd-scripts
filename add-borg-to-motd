@@ -9,7 +9,6 @@ source "${THISDIR}/common"
 # Secret keys
 # shellcheck source=/dev/null
 source '/root/.borg'
-NUM_OUTPUTS=3
 
 set +e
 BORG_OUTPUT="$("${BORG}" \
@@ -17,12 +16,12 @@ BORG_OUTPUT="$("${BORG}" \
   --prefix "${HOSTNAME}" \
   --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
   "${REPOSITORY}" | \
-  tail -n "${NUM_OUTPUTS}")"
+  tail -n "${NUM_BACKUPS}")"
 SALL_GOOD=$?
 set -e
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
-  header 'Latest Backups'
+  header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
   echo "${BORG_OUTPUT}"
 else
   say_color "${COLOR_RED}" 'Unable to query backups'

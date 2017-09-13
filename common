@@ -36,6 +36,9 @@ export RESET_TEXT="\e[0m"
 # Layout
 export FIRST_COLUMN=20
 
+# Backup configuration
+NUM_BACKUPS=3
+
 # Functions
 
 say_color() {
