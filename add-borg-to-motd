@@ -1,12 +1,14 @@
 #!/bin/bash
 
 set -e
+# Shared code
 THISDIR="$(dirname "$(readlink -f "$0")")"
 source "${THISDIR}/common"
 
+# Secret keys
 source '/root/.borg'
-
 NUM_OUTPUTS=3
+
 set +e
 BORG_OUTPUT="$("${BORG}" \
   list \
