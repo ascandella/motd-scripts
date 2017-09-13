@@ -49,14 +49,14 @@ if command -v screenfetch >/dev/null ; then
   screenfetch -L
 fi
 
-echo -e "
- $COLOR_COLUMN- Hostname$RESET_TEXT            $COLOR_BLUE $HOSTNAME $RESET_TEXT
- $COLOR_COLUMN- CPU usage$RESET_TEXT           ${COLOR_BLUE} ${LOAD} $RESET_TEXT
- $COLOR_COLUMN- Cores Temperature$RESET_TEXT   ${COLOR_YELLOW}${STYLE_BOLD} $TEMPERATURE $RESET_TEXT
- $COLOR_COLUMN- Processes$RESET_TEXT           $COLOR_BLUE $PSA running $RESET_TEXT
- $COLOR_COLUMN- System uptime$RESET_TEXT       $COLOR_BLUE $upDays days $upHours hours $upMins minutes $upSecs seconds $RESET_TEXT
- $COLOR_COLUMN- Users$RESET_TEXT               $COLOR_BLUE Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on $RESET_TEXT
-"
+header_1 "Hostname" "${HOSTNAME}"
+header_1 "CPU usage" "${LOAD}"
+header_1 "Cores Temperature" "${COLOR_YELLOW}${STYLE_BOLD}${TEMPERATURE}"
+header_1 "Processes" "${PSA} running"
+header_1 "System uptime" "$upDays days $upHours hours $upMins minutes $upSecs seconds"
+header_1 "Users" "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on"
+
+echo
 
 for script in add-borg-to-motd weather ; do
   HELPER="${THISDIR}/${script}"

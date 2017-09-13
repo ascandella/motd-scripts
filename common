@@ -34,12 +34,25 @@ export BACKGROUND_NICE_BLUE="\e[48;5;31m"
 export RESET_TEXT="\e[0m"
 
 # Layout
-export FIRST_COLUMN=20
+export FIRST_COLUMN=25
 
 # Backup configuration
 export NUM_BACKUPS=3
 
 # Functions
+
+display_column1() {
+  printf " ${COLOR_COLUMN}- %-${FIRST_COLUMN}s${RESET_TEXT}" "${1}"
+}
+
+display_column2() {
+  echo -e "${COLOR_BLUE} ${1}${RESET_TEXT}"
+}
+
+header_1() {
+  display_column1 "${1}"
+  display_column2 "${2}"
+}
 
 say_color() {
   echo -e "${1}${2}${RESET_TEXT}"
