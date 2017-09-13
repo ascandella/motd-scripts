@@ -34,8 +34,7 @@ worth_displaying() {
 
 display_color() {
   if [[ "${1}" =~ size ]] ; then
-    echo -ne "\e[48;5;31m"
-    echo -ne "${BOLD}"
+    echo -ne "\e[48;5;31m${BOLD}"
   fi
   return
 }
@@ -54,11 +53,8 @@ TABLETIME=0
 WEREDOINGITLIVE=0
 ISDASH=0
 
-HIGHSCORE=1
-
 while IFS='' read line ; do
   if [[ "${line}" =~ ^--- ]] ; then
-    ISDASH=1
     ((DASHCOUNT++))
     # we hit our first important thing
     WEREDOINGITLIVE=1
@@ -67,26 +63,19 @@ while IFS='' read line ; do
       2) SUMMARYTIME=1 ;;
       *) exit 0 ;;
     esac
-  else
-    ISDASH=
+    echo
+    continue
   fi
 
   if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
-    if ((${ISDASH})) ; then
-      echo
-    else
-      if worth_displaying "${line}" ; then
-        if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
-          ## dark magick
-          first="$(echo "${line}" | cut -d':' -f1)"
-          rest="$(echo "${line}" | cut -d':' -f2-)"
-          charcount="$(echo "${first}" | wc -c)"
-          HIGHSCORE="$(max ${charcount} ${HIGHSCORE})"
-          printf "%20s %20s" "${first}" "${second}"
-        fi
-        color="$(display_color "${line}")"
-        say_color "${color}" "${line}"
+    if worth_displaying "${line}" ; then
+      if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
+        first="$(echo "${line}" | cut -d':' -f1)"
+        rest="$(echo "${line}" | cut -d':' -f2-)"
+        printf "%-20s %-20s\n" "${first}" "${second}"
       fi
+      color="$(display_color "${line}")"
+      say_color "${color}" "${line}"
     fi
   fi
 done < "${INFILE}"
