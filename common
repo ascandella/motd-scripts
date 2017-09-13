@@ -1,21 +1,34 @@
-THISDIR="$(dirname "$(readlink -f "$0")")"
+# vim: filetype=sh
+
+export THISDIR="$(dirname "$(readlink -f "$0")")"
 
 # Paths
 export BORG_OUT='/tmp/borg.latest'
 export EXTRACT="${THISDIR}/borg-extract"
 export BORG="borg"
 
+# Variables
+export USER="$(whoami)"
+export HOSTNAME="$(uname -n)"
+
 # Colors
 export RESET_TEXT="\e[0m"
 export HEADER_COLOR="\e[48;5;237m"
-export BORTD="\e[1m"
+export COLOR_COLUMN="\e[1m-"
+export COLOR_YELLOW="\e[93m"
+export COLOR_BOLD="\e[1m"
+export COLOR_GREEN="\e[92m"
+export COLOR_BLUE="\e[36m"  # actually cyan
+export RESET_COLORS="\e[0m"
+
+# Functions
 
 say_color() {
   echo -e "${1}${2}${RESET_TEXT}"
 }
 
 header() {
-  echo -e "${HEADER_COLOR}${1}${RESET_TEXT}"
+  say_color "${HEADER_COLOR}" "${1}"
 }
 
 reset_color() {
