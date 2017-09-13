@@ -59,7 +59,7 @@ echo -e "
  $COLOR_COLUMN- Cores Temperature$RESET_TEXT   ${COLOR_YELLOW}${STYLE_BOLD} $TEMPERATURE $RESET_TEXT
  $COLOR_COLUMN- Processes$RESET_TEXT           $COLOR_BLUE $PSA running $RESET_TEXT
  $COLOR_COLUMN- System uptime$RESET_TEXT       $COLOR_BLUE $upDays days $upHours hours $upMins minutes $upSecs seconds $RESET_TEXT
- $COLOR_COLUMN- Users$RESET_TEXT               $COLOR_BLUE Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${COLOR_RESET}${COLOR_BLUE} user(s) logged on $RESET_TEXT
+ $COLOR_COLUMN- Users$RESET_TEXT               $COLOR_BLUE Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on $RESET_TEXT
 "
 
 BORG_SCRIPT="${THISDIR}/add-borg-to-motd"
