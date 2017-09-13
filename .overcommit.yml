@@ -18,11 +18,19 @@
 PreCommit:
   TrailingWhitespace:
     enabled: true
+
   Mdl:
     enabled: true
+
   TravisLint:
     enabled: true
+
   ShellCheck:
     enabled: true
+    include:
+      - '*'
+    exclude:
+      - '*.md'
+      - '*.yml'
 
 verify_signatures: true
