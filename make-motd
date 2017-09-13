@@ -49,12 +49,12 @@ if command -v screenfetch >/dev/null ; then
   screenfetch -L
 fi
 
-header_1 "Hostname" "${HOSTNAME}"
-header_1 "CPU usage" "${LOAD}"
-header_1 "Cores Temperature" "${COLOR_YELLOW}${STYLE_BOLD}${TEMPERATURE}"
-header_1 "Processes" "${PSA} running"
-header_1 "System uptime" "$upDays days $upHours hours $upMins minutes $upSecs seconds"
-header_1 "Users" "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on"
+header_1 'Hostname' "${HOSTNAME}"
+header_1 'CPU usage' "${LOAD}"
+header_1 'Cores Temperature' "${COLOR_YELLOW}${STYLE_BOLD}${TEMPERATURE}"
+header_1 'Processes' "${PSA} running"
+header_1 'System uptime' "$upDays days $upHours hours $upMins minutes $upSecs seconds"
+header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on"
 
 echo
 

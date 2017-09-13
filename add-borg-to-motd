@@ -10,6 +10,16 @@ source "${THISDIR}/common"
 # shellcheck source=/dev/null
 source '/root/.borg'
 
+# Functions
+output_in_columns() {
+  while read line ; do
+    first="$(echo ${line} | cut -d' ' -f1)"
+    rest="$(echo ${line} | cut -d' ' -f2-)"
+    printf "%-${FIRST_COLUMN}s" "${first}"
+    echo "${rest}"
+  done <<< "${1}"
+}
+
 set +e
 BORG_OUTPUT="$("${BORG}" \
   list \
@@ -22,7 +32,7 @@ set -e
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
   header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
-  echo "${BORG_OUTPUT}"
+  output_in_columns "${BORG_OUTPUT}"
 else
   say_color "${COLOR_RED}" 'Unable to query backups'
   exit "${SALL_GOOD}"
