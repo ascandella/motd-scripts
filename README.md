@@ -9,7 +9,7 @@ README does not cover setting up Borg either on Fedora or Synology, but they
 have great docs. Pro-tip: use the self-contained x64 binary to install on your
 NAS (don't bother with Py3k).
 
-[Borg](https://borgbackup.readthedocs.io/en/stable/)
+[Borg]: https://borgbackup.readthedocs.io/en/stable/
 
 ## Installation
 
