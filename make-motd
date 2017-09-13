@@ -59,10 +59,10 @@ echo -e "
 "
 
 for script in add-borg-to-motd weather ; do
-	HELPER="${THISDIR}/${script}"
-	if [[ -x "${HELPER}" ]] ; then
-		"${HELPER}"
-	fi
+  HELPER="${THISDIR}/${script}"
+  if [[ -x "${HELPER}" ]] ; then
+    "${HELPER}"
+  fi
 done
 
 # Leftover columns for reference
