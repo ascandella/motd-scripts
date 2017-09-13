@@ -3,6 +3,7 @@
 set -eu
 set -o pipefail
 THISDIR="$(dirname "$(readlink -f "$0")")"
+# shellcheck source=./common
 source "${THISDIR}/common"
 
 # Vars
@@ -12,22 +13,14 @@ WEREDOINGITLIVE=0
 
 INFILE="${1-}"
 if [[ ! -e "${INFILE}" ]] ; then
-  if [[ "${INFILE}" == "-" ]] ; then
-    INFILE="/dev/stdin"
-  else
-    echo "Need an input file to process"
-    exit 1
+  INFILE="/dev/stdin"
+  if [[ ! "${INFILE}" == "-" ]] ; then
+    # https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr
+    (>&2 echo "Reading from STDIN")
   fi
 fi
 
 # Functions
-max() {
-  if [ "$2" -gt "$1" ]; then
-    echo "$1"
-  else
-    echo "$2"
-  fi
-}
 
 # get rid of some dumb shit
 worth_displaying() {
@@ -42,7 +35,7 @@ worth_displaying() {
 
 display_color() {
   if [[ "${1}" =~ size ]] ; then
-    echo -ne "\e[48;5;31m${BOLD}"
+    echo -ne "${BACKGROUND_NICE_BLUE}${STYLE_BOLD}"
   fi
   return
 }
@@ -55,7 +48,7 @@ has_colon() {
 }
 
 trim_whitespace() {
-  echo "$(echo -e "${1}" | tr -d [:space]:)"
+  echo -e "${1}" | tr -d '[:blank:]'
 }
 
 while IFS='' read -r line ; do
@@ -78,7 +71,7 @@ while IFS='' read -r line ; do
         first="$(echo "${line}" | cut -d':' -f1)"
         rest="$(echo "${line}" | cut -d':' -f2- | sed 's/^[ ]\+//')"
         printf "%-20s" "${first}"
-        say_color "${COLOR_BOLD}" "${rest}"
+        say_color "${STYLE_BOLD}" "${rest}"
       else
         color="$(display_color "${line}")"
         say_color "${color}" "${line}"

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sectioneight/motd-scripts.svg?branch=master)](https://travis-ci.org/sectioneight/motd-scripts)
+
 # Fancy MOTD
 
 Note: I run Fedora 26. These scripts may or may not be useful on other distros.

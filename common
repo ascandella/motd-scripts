@@ -1,3 +1,5 @@
+#!/bin/bash
+# note: not to be run directly, shebang just for shellcheck
 # vim: filetype=sh
 
 THISDIR="$(dirname "$(readlink -f "$0")")"
@@ -15,15 +17,21 @@ HOSTNAME="$(uname -n)"
 export HOSTNAME
 
 # Colors
-export RESET_TEXT="\e[0m"
 export HEADER_COLOR="\e[48;5;237m"
 export COLOR_COLUMN="\e[1m-"
 export COLOR_YELLOW="\e[93m"
-export COLOR_BOLD="\e[1m"
 export COLOR_GREEN="\e[92m"
 export COLOR_BLUE="\e[36m"  # actually cyan
 export COLOR_RED="\e[41m"
-export RESET_COLORS="\e[0m"
+
+# Styles
+export STYLE_BOLD="\e[1m"
+
+# Backgrounds
+export BACKGROUND_NICE_BLUE="\e[48;5;31m"
+
+# Resets
+export RESET_TEXT="\e[0m"
 
 # Functions
 
