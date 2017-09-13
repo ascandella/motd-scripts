@@ -16,6 +16,10 @@
 #      /usr/local/bin/dynmotd
 # #requires fortune cowsay, lm_sensors
 
+set -e
+THISDIR="$(dirname "$(readlink -f "$0")")"
+source "${THISDIR}/common"
+
 USER="$(whoami)"
 HOSTNAME="$(uname -n)"
 #IP="$(hostname -i)"
@@ -41,13 +45,6 @@ upSecs=i"$(expr $uptime % 60)"
 #System load
 LOAD="$(awk {'print $1, $2, $3'} /proc/loadavg)"
 
-COLOR_COLUMN="\e[1m-"
-COLOR_YELLOW="\e[93m"
-COLOR_BOLD="\e[1m"
-COLOR_GREEN="\e[92m"
-COLOR_BLUE="\e[36m"  # actually cyan
-RESET_COLORS="\e[0m"
-
 # Get dat sweet, sweet logo
 if command -v screenfetch >/dev/null ; then
   screenfetch -L
@@ -62,14 +59,14 @@ echo -e "
 "
 # $COLOR_COLUMN- Disk space HOME$RESET_COLORS.....$COLOR_RED $HOME remaining $RESET_COLORS
 # $COLOR_COLUMN- Current user$RESET_COLORS        ${COLOR_GREEN} $USER $RESET_COLORS
-# $COLOR_COLUMN- Users$RESET_COLORS               $COLOR_BLUE Currently ${COLOR_BOLD}${NUM_UNIQUE_USERS}${COLOR_RESET}${COLOR_BLUE} user(s) logged on $RESET_COLORS
+  $COLOR_COLUMN- Users$RESET_COLORS               $COLOR_BLUE Currently ${COLOR_BOLD}${NUM_UNIQUE_USERS}${COLOR_RESET}${COLOR_BLUE} user(s) logged on $RESET_COLORS
 # $COLOR_COLUMN- Release$RESET_COLORS.............$COLOR_RED `cat /etc/redhat-release` $RESET_COLORS
 
  #$COLOR_COLUMN- Memory used$RESET_COLORS.........: $COLOR_RED $MEMORY (total-free-used) $RESET_COLORS
  #$COLOR_COLUMN- Swap in use$RESET_COLORS.........: $COLOR_RED $SWAP (total-used-free) MB $RESET_COLORS
  #$COLOR_COLUMN- IP Address$RESET_COLORS..........: $COLOR_BLUE $IP $RESET_COLORS
 
-BORG_SCRIPT='/etc/dynamic-motd/add-borg-to-motd'
+BORG_SCRIPT="${THISDIR}/add-borg-to-motd"
 if [[ -x "${BORG_SCRIPT}" ]] ; then
   "${BORG_SCRIPT}"
 fi
