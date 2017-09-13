@@ -1,2 +1,2 @@
 script:
-  - shellcheck $(find . -maxdepth 1 -not -name '*.md' -not -name '.' -not -name '.git' -print)
+  - shellcheck $(find . -maxdepth 1 -not -name '*.md' -not -name '.' -not -name '.git' -not -name '*.yml' -print)
