@@ -16,7 +16,9 @@
 #      /usr/local/bin/dynmotd
 # #requires fortune cowsay, lm_sensors
 
-set -e
+set -eu
+set -o pipefail
+
 THISDIR="$(dirname "$(readlink -f "$0")")"
 # shellcheck source=./common
 source "${THISDIR}/common"
