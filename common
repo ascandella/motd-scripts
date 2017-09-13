@@ -33,6 +33,9 @@ export BACKGROUND_NICE_BLUE="\e[48;5;31m"
 # Resets
 export RESET_TEXT="\e[0m"
 
+# Layout
+export FIRST_COLUMN=20
+
 # Functions
 
 say_color() {
@@ -46,3 +49,22 @@ header() {
 reset_color() {
   echo -ne "${RESET_TEXT}"
 }
+
+has_delim() {
+  if [[ "${1}" =~ [$2] ]] ; then
+    return 0
+  fi
+  return 1
+}
+
+trim_whitespace() {
+  echo -e "${1}" | tr -d [:space:]
+}
+
+# TODO
+#split_by_line() {
+  ## $1 - style for first
+  ## $2 - delim
+  ## $3 - width for first
+  ## $4 - style for second
+#}
