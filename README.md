@@ -25,7 +25,7 @@ this file in `/etc/cron.d/create-motd`
 */5 * * * * /etc/dynamic-motd/make-motd > /etc/motd2 && mv /etc/motd2 /etc/motd
 ```
 
-`/etc/dynamic-motd/make-mod` is a symlink to a checkout of this repo. None of
+`/etc/dynamic-motd/make-motd` is a symlink to a checkout of this repo. None of
 the other scripts need to be symlinked in -- they all detect their installation
 path via `readlink -f`.
 
