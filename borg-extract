@@ -50,13 +50,14 @@ DASHCOUNT=0
 TABLETIME=0
 WEREDOINGITLIVE=0
 
-while IFS='' read line ; do
+while IFS='' read -r line ; do
   if [[ "${line}" =~ ^--- ]] ; then
     ((DASHCOUNT++))
     # we hit our first important thing
     WEREDOINGITLIVE=1
     case ${DASHCOUNT} in
       1) TABLETIME=1 ;;
+      2) ;;
       *) exit 0 ;;
     esac
     echo
@@ -68,7 +69,7 @@ while IFS='' read line ; do
       if has_colon "${line}" && [[ ${TABLETIME} == 1 ]] ; then
         first="$(echo "${line}" | cut -d':' -f1)"
         rest="$(echo "${line}" | cut -d':' -f2-)"
-        printf "%-20s %s\n" "${first}" "${second}"
+        printf "%-20s %s\n" "${first}" "${rest}"
       fi
       color="$(display_color "${line}")"
       say_color "${color}" "${line}"
