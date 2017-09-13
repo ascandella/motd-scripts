@@ -64,6 +64,10 @@ if [[ -x "${BORG_SCRIPT}" ]] ; then
   "${BORG_SCRIPT}"
 fi
 
+
+
+
+
 # Leftover columns for reference
 
 # $COLOR_COLUMN- Disk space HOME$RESET_COLORS.....$COLOR_RED $HOME remaining $RESET_COLORS

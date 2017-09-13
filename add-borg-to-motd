@@ -18,10 +18,10 @@ SALL_GOOD=$?
 set -e
 
 if [[ $SALL_GOOD -eq 0 ]] ; then
-  header "Latest Backups"
+  header 'Latest Backups'
   echo "${BORG_OUTPUT}"
 else
-  say_color "\e[41m" 'Unable to query backups'
+  say_color "${COLOR_RED}" 'Unable to query backups'
   exit "${SALL_GOOD}"
 fi
 
