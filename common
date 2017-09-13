@@ -37,7 +37,7 @@ export RESET_TEXT="\e[0m"
 export FIRST_COLUMN=20
 
 # Backup configuration
-NUM_BACKUPS=3
+export NUM_BACKUPS=3
 
 # Functions
 
