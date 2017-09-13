@@ -46,8 +46,6 @@ has_colon() {
   return 1
 }
 
-RESET_COLOR="\e[0m"
-
 DASHCOUNT=0
 TABLETIME=0
 WEREDOINGITLIVE=0
