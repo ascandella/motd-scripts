@@ -70,7 +70,7 @@ while IFS='' read -r line ; do
         say_color "${STYLE_BOLD}" "${rest}"
       else
         color="$(display_color "${line}")"
-        say_color "${color}" "${line}"
+        say_color "${color}" "${line}" | tr ':' ' '
       fi
     fi
   fi

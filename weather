@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+CITY="${1:-Seattle}"
+set -e
+WEATHER_OUTPUT="$(curl --silent -m 3 wttr.in/"${CITY}"?0)"
+RET=$?
+set +e
+
+if [[ "${RET}" -eq 0 ]] ; then
+  echo -e "${WEATHER_OUTPUT}" | tail -n +3
+  echo
+fi
+
+exit ${RET}

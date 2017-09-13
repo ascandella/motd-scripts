@@ -34,10 +34,6 @@ NUM_UNIQUE_USERS="$(users | tr ' ' '\n' | sort | uniq | wc -w)"
 PSA="$(ps -Afl | wc -l)"
 TEMPERATURE="$(sensors -f | grep Core | awk '{print $3}' | xargs)"
 
-#weather
-#URL='http://www.accuweather.com/en/gb/edinburgh/eh1-3/weather-forecast/327336'
-#WEATHER=$(wget -q -O- --timeout=2 "$URL" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $2": "$16", "$12"°" }'| head -1)
-
 # System uptime
 uptime="$(cut -f1 -d. < /proc/uptime)"
 upDays="$((uptime / 60 / 60 / 24))"
@@ -62,14 +58,12 @@ echo -e "
  $COLOR_COLUMN- Users$RESET_TEXT               $COLOR_BLUE Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on $RESET_TEXT
 "
 
-BORG_SCRIPT="${THISDIR}/add-borg-to-motd"
-if [[ -x "${BORG_SCRIPT}" ]] ; then
-  "${BORG_SCRIPT}"
-fi
-
-
-
-
+for script in add-borg-to-motd weather ; do
+	HELPER="${THISDIR}/${script}"
+	if [[ -x "${HELPER}" ]] ; then
+		"${HELPER}"
+	fi
+done
 
 # Leftover columns for reference
 
