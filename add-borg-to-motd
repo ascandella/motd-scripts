@@ -32,7 +32,11 @@ display_borg() {
 
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
-    output_in_columns "${BORG_OUTPUT}" | tail -n "${NUM_BACKUPS}"
+
+    while IFS='' read -r line ; do
+      line="$(echo ${line} | sed 's/[ ]+/ /')"
+      output_in_columns "${line}"
+    done <<< "${BORG_OUTPUT}"
   else
     say_color "${COLOR_RED}" 'Unable to query backups'
     exit "${SALL_GOOD}"

@@ -25,7 +25,7 @@ source "${THISDIR}/common"
 
 # Get dat sweet, sweet logo
 if command -v screenfetch >/dev/null ; then
-  screenfetch -L
+  screenfetch
 fi
 
 
