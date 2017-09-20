@@ -20,26 +20,30 @@ output_in_columns() {
   done <<< "${1}"
 }
 
-set +e
-BORG_OUTPUT="$("${BORG}" \
-  list \
-  --prefix "${HOSTNAME}" \
-  --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
-  "${REPOSITORY}" | \
-  tail -n "${NUM_BACKUPS}")"
-SALL_GOOD=$?
-set -e
+display_borg() {
+  set +e
+  BORG_OUTPUT="$("${BORG}" \
+    list \
+    --prefix "${HOSTNAME}" \
+    --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
+    "${REPOSITORY}" | \
+    tail -n "${NUM_BACKUPS}")"
+  readonly local SALL_GOOD=$?
+  set -e
 
-if [[ $SALL_GOOD -eq 0 ]] ; then
-  header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
-  output_in_columns "${BORG_OUTPUT}" | tail -n "${NUM_BACKUPS}"
-else
-  say_color "${COLOR_RED}" 'Unable to query backups'
-  exit "${SALL_GOOD}"
-fi
+  if [[ $SALL_GOOD -eq 0 ]] ; then
+    header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
+    output_in_columns "${BORG_OUTPUT}" | tail -n "${NUM_BACKUPS}"
+  else
+    say_color "${COLOR_RED}" 'Unable to query backups'
+    exit "${SALL_GOOD}"
+  fi
 
-if [[ -r "${BORG_OUT}" ]] ; then
-  echo -ne "${HEADER_COLOR}"
-  "${EXTRACT}" "${BORG_OUT}"
-  reset_color
-fi
+  if [[ -r "${BORG_OUT}" ]] ; then
+    echo -ne "${HEADER_COLOR}"
+    "${EXTRACT}" "${BORG_OUT}"
+    reset_color
+  fi
+}
+
+display_borg
