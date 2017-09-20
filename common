@@ -32,6 +32,7 @@ export BACKGROUND_NICE_BLUE="\e[48;5;31m"
 
 # Resets
 export RESET_TEXT="\e[0m"
+export STYLE_NORMAL="\e[49m"
 
 # Layout
 export FIRST_COLUMN=30
@@ -55,7 +56,7 @@ header_1() {
 }
 
 say_color() {
-  echo -e "${1}${2}${RESET_TEXT}"
+  printf "${1}${2}${RESET_TEXT}\n"
 }
 
 header() {
@@ -76,11 +77,3 @@ has_delim() {
 trim_whitespace() {
   echo -e "${1}" | tr -d '[:space:]'
 }
-
-# TODO
-#split_by_line() {
-  ## $1 - style for first
-  ## $2 - delim
-  ## $3 - width for first
-  ## $4 - style for second
-#}

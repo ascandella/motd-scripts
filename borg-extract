@@ -36,6 +36,8 @@ worth_displaying() {
 display_color() {
   if [[ "${1}" =~ size ]] ; then
     echo -ne "${BACKGROUND_NICE_BLUE}${BOLD}"
+  elif [[ "${1}" =~ Archive ]] ; then
+    echo -ne "${BACKGROUND_NICE_BLUE}${BOLD}"
   fi
   return
 }
@@ -56,15 +58,26 @@ while IFS='' read -r line ; do
 
   if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
     if worth_displaying "${line}" ; then
-      if has_delim "${line}" ':' && \
-          [[ ${TABLETIME} == 1 ]] ; then
+      if has_delim "${line}" ':' &&  [[ ${TABLETIME} == 1 ]] ; then
         first="$(echo "${line}" | cut -d':' -f1)"
         rest="$(echo "${line}" | cut -d':' -f2- | sed 's/^[ ]\+//')"
+
+        case "${line}" in
+          Number*)
+            # black magic
+            rest="$(echo "${rest}" | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta')"
+            rest="\e[48;5;19m${rest}"
+            ;;
+          Archive)
+            rest_color="${STYLE_NORMAL}"
+            ;;
+          *)
+            rest_color="${STYLE_BOLD}"
+            ;;
+        esac
+
         printf "%-${FIRST_COLUMN}s" "${first}"
-        rest_color="${STYLE_BOLD}"
-        if [[ "${line}" =~ "Archive" ]] ; then
-          rest_color=""
-        fi
+
         say_color "${rest_color}" "${rest}"
       else
         color="$(display_color "${line}")"
