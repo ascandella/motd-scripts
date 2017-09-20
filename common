@@ -68,7 +68,8 @@ header_1() {
 }
 
 say_color() {
-  printf "${1}${2}${RESET_TEXT}\n"
+  printf "%b%b%b\n" "${1}" "${2}" "${RESET_TEXT}"
+  #printf "${1}${2}${RESET_TEXT}\n"
 }
 
 header() {
