@@ -71,6 +71,9 @@ while IFS='' read -r line ; do
           Archive)
             rest_color="${STYLE_NORMAL}"
             ;;
+          Time*)
+            rest_color="${STYLE_NORMAL}"
+            ;;
           *)
             rest_color="${STYLE_BOLD}"
             ;;

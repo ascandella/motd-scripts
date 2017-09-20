@@ -6,15 +6,13 @@ THISDIR="$(dirname "$(readlink -f "$0")")"
 # shellcheck source=./common
 source "${THISDIR}/common"
 
-# Secret keys
-# shellcheck source=/dev/null
-source '/root/.borg'
-
 # Functions
 output_in_columns() {
-  while read line ; do
-    local first="$(echo ${line} | cut -d' ' -f1)"
-    local rest="$(echo ${line} | cut -d' ' -f2-)"
+  while read -r line ; do
+    local first
+    first="$(echo "${line}" | cut -d' ' -f1)"
+    local rest
+    rest="$(echo "${line}" | cut -d' ' -f2-)"
     printf "%-${FIRST_COLUMN}s" "${first}"
     echo "${rest}"
   done <<< "${1}"
@@ -22,7 +20,8 @@ output_in_columns() {
 
 display_borg() {
   set +e
-  BORG_OUTPUT="$("${BORG}" \
+  BORG_OUTPUT="$( \
+    "${BORG}" \
     list \
     --prefix "${HOSTNAME}" \
     --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \

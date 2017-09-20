@@ -10,6 +10,12 @@ export BORG_OUT='/tmp/borg.latest'
 export EXTRACT="${THISDIR}/borg-extract"
 export BORG="borg"
 
+# Secret keys
+BORG_KEYS='/root/.borg'
+# shellcheck source=/dev/null
+source "${BORG_KEYS}"
+
+
 # Variables
 USER="$(whoami)"
 export USER
@@ -39,6 +45,12 @@ export FIRST_COLUMN=30
 
 # Backup configuration
 export NUM_BACKUPS=3
+
+# shellcheck source=./common
+source "${BORG_KEYS}"
+
+USER="$(whoami)"
+HOSTNAME="$(uname -n)"
 
 # Functions
 
