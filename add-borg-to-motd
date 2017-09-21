@@ -12,7 +12,7 @@ output_in_columns() {
     local first
     first="$(echo "${line}" | cut -d' ' -f1)"
     local rest
-    rest="$(echo "${line}" | cut -d' ' -f2-)"
+    rest="$(echo "${line}" | tr -s ' ' | cut -d' ' -f2-)"
     printf "%-${FIRST_COLUMN}s" "${first}"
     echo "${rest}"
   done <<< "${1}"
@@ -34,7 +34,7 @@ display_borg() {
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
 
     while IFS='' read -r line ; do
-      line="$(echo ${line} | sed 's/[ ]+/ /')"
+      line="${line//[\w]+/}"
       output_in_columns "${line}"
     done <<< "${BORG_OUTPUT}"
   else
