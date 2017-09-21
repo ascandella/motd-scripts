@@ -35,9 +35,9 @@ worth_displaying() {
 
 display_color() {
   if [[ "${1}" =~ size ]] ; then
-    echo -ne "${BACKGROUND_NICE_BLUE}${BOLD}"
+    echo -ne "${BACKGROUND_NICE_BLUE}${STYLE_BOLD}"
   elif [[ "${1}" =~ Archive ]] ; then
-    echo -ne "${BACKGROUND_NICE_BLUE}${BOLD}"
+    echo -ne "${BACKGROUND_NICE_BLUE}${STYLE_BOLD}"
   fi
   return
 }
