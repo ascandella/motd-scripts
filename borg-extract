@@ -1,4 +1,5 @@
 #!/bin/bash
+# Exract output fcom the "borg" bacuup program into human-readable and fun info.
 
 set -eu
 set -o pipefail

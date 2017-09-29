@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Grab data from `borg`, the cross-host bacup program, and prepare a report in a
+# tempfile for `./borg-extract` to prettify and etract all the relevant bits.
+
 set -e
 # Shared code
 THISDIR="$(dirname "$(readlink -f "$0")")"
@@ -30,6 +33,7 @@ display_borg() {
   readonly local SALL_GOOD=$?
   set -e
 
+  set -x
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
 
@@ -47,6 +51,8 @@ display_borg() {
     "${EXTRACT}" "${BORG_OUT}"
     reset_color
   fi
+
+  set +x
 }
 
 display_borg

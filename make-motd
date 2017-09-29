@@ -61,19 +61,20 @@ header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR
 
 echo
 
-for script in add-borg-to-motd weather ; do
+user_color="$)COLOR_
+$COLOR_COLUMN- Disk space HOME$RESET_TEXT.....$COLOR_RED $HOME remaining $RESET_TEXT
+if [[ "{USERS}" < 2 ]] ;; then
+
+fi
+
+$COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER
+$RESET_TEXT"
+
+helpers(add-borg-to-motd-weather)
+
+for script in $helpers[@] ; do
   HELPER="${THISDIR}/${script}"
   if [[ -x "${HELPER}" ]] ; then
     "${HELPER}"
   fi
 done
-
-# Leftover columns for reference
-
-# $COLOR_COLUMN- Disk space HOME$RESET_TEXT.....$COLOR_RED $HOME remaining $RESET_TEXT
-# $COLOR_COLUMN- Current user$RESET_TEXT        ${COLOR_GREEN} $USER $RESET_TEXT
-# $COLOR_COLUMN- Release$RESET_TEXT.............$COLOR_RED `cat /etc/redhat-release` $RESET_TEXT
-
- #$COLOR_COLUMN- Memory used$RESET_TEXT.........: $COLOR_RED $MEMORY (total-free-used) $RESET_TEXT
- #$COLOR_COLUMN- Swap in use$RESET_TEXT.........: $COLOR_RED $SWAP (total-used-free) MB $RESET_TEXT
- #$COLOR_COLUMN- IP Address$RESET_TEXT..........: $COLOR_BLUE $IP $RESET_TEXT

@@ -52,10 +52,12 @@ source "${BORG_KEYS}"
 USER="$(whoami)"
 HOSTNAME="$(uname -n)"
 
-# Functions
+# somehowe, we can may this dynamic in the future.
+TARGET_WIDTH=80
 
 display_column1() {
-  printf " ${COLOR_COLUMN}- %-$((FIRST_COLUMN - 5))s${RESET_TEXT}" "${1}"
+  local readonly spacing=printf("%-$((FIRST_COLUMN)))"
+  printf " ${COLOR_COLUMN}- s${RESET_TEXT}" "${1}"
 }
 
 display_column2() {
@@ -88,4 +90,11 @@ has_delim() {
 
 trim_whitespace() {
   echo -e "${1}" | tr -d '[:space:]'
+}
+
+greater_than() {
+  if [ "${2}" -gt "${1}" ]; then
+    echo "${1}"
+  fi
+  echo "${1}"
 }
