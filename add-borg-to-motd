@@ -9,19 +9,22 @@ THISDIR="$(dirname "$(readlink -f "$0")")"
 # shellcheck source=./common
 source "${THISDIR}/common"
 
-# Functions
-output_in_columns() {
-  while read -r line ; do
-    local first
-    first="$(echo "${line}" | cut -d' ' -f1)"
-		local readonly row1_width=size=${#first}
-    padding=$((TARGET_WIDTH - row1_width))
-    rest="$(echo "${line}" | tr -s ' ' | cut -d' ' -f2)"
-    printf "%-${FIRST_COLUMN}s" "${first}"
-		printf "%-${padding}s" " "
-    echo "${rest}"
-  done <<< "${1}"
-}
+## Functions
+#output_in_columns() {
+  #while read -r line ; do
+    #local first
+    #first="$(echo "${line}" | cut -d' ' -f1)"
+    #local col1_width="$(echo "${first}" | wc -c)"
+    #shift
+    #rest="$(echo "${line}" | tr -s ' ' | cut -d' ' -f2)"
+    #local col2_width="$(echo "${rest}" | wc -c)"
+    #padding=$((TARGET_WIDTH - col1_width - col2_width))
+    ##echo "Padding: ${padding}"
+    #printf "%-${FIRST_COLUMN}s" "${first}"
+    #printf "%-${padding}s" " "
+    #echo -e "${rest}"
+  #done <<< "${1}"
+#}
 
 display_borg() {
   BORG_OUTPUT="$( \
@@ -30,16 +33,16 @@ display_borg() {
     --prefix "${HOSTNAME}" \
     --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
     "${REPOSITORY}" | \
-    tail -n "${NUM_BACKUPS}")"
+    tail -n "${NUM_BACKUPS}" \
+  )"
   readonly local SALL_GOOD=$?
   set -e
 
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
-
     while IFS='' read -r line ; do
-      line="${line//[\w]+/}"
-      output_in_columns "${line}"
+      line=$(trim_whitespace "${1}")
+      break_columns "${line}"
     done <<< "${BORG_OUTPUT}"
   else
     say_color "${COLOR_RED}" 'Unable to query backups'

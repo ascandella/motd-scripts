@@ -36,7 +36,7 @@ LOAD="$(awk '{print $1, $2, $3}' /proc/loadavg)"
 PSA="$(ps -Afl | wc -l)"
 
 #IP="$(hostname -i)"
-#HOME=$(df -Ph | grep home | awk '{print $4}' | tr -d '\n')
+HOME=$(df -Ph | grep home | awk '{print $4}' | tr -d '\n')
 #BACKUP=$(df -Ph | grep backup | awk '{print $4}' | tr -d '\n')
 NUM_UNIQUE_USERS="$(users | tr ' ' '\n' | sort | uniq | wc -w)"
 #MEMORY="$(free -m | grep "Mem" | awk '{print $2,"-",$3,"-",$4}')"
@@ -65,7 +65,7 @@ header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR
 #fi
 
 echo -e "
- $COLOR_COLUMN- Disk space HOME${RESET_TEXT}      ${COLOR_GREEN}$HOME remaining $RESET_TEXT
+ $COLOR_COLUMN- Disk space HOME${RESET_TEXT}      ${COLOR_GREEN}${HOME} remaining $RESET_TEXT
  $COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER $RESET_TEXT"
 
 echo
