@@ -43,50 +43,55 @@ display_color() {
   return
 }
 
-while IFS='' read -r line ; do
-  if [[ "${line}" =~ ^--- ]] ; then
-    ((DASHCOUNT++)) || true
-    # we hit our first important thing
-    WEREDOINGITLIVE=1
-    case ${DASHCOUNT} in
-      1) TABLETIME=1 ;;
-      2) TABLETIME=0;;
-      *) exit 0 ;;
-    esac
-    echo
-    continue
-  fi
+WEREDOINGITLIVE=1
+borg_extract() {
+  while IFS='' read -r line ; do
+    if [[ "${line}" =~ ^--- ]] ; then
+      ((DASHCOUNT++)) || true
+      # we hit our first important thing
+      WEREDOINGITLIVE=1
+      case ${DASHCOUNT} in
+        1) TABLETIME=1 ;;
+        2) TABLETIME=0;;
+        *) exit 0 ;;
+      esac
+      echo
+      continue
+    fi
 
-  if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
-    if worth_displaying "${line}" ; then
-      if has_delim "${line}" ':' &&  [[ ${TABLETIME} == 1 ]] ; then
-        first="$(echo "${line}" | cut -d':' -f1)"
-        rest="$(echo "${line}" | cut -d':' -f2- | sed 's/^[ ]\+//')"
+    if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
+      if worth_displaying "${line}" ; then
+        if has_delim "${line}" ':' &&  [[ ${TABLETIME} == 1 ]] ; then
+					set +x
+          first="$(echo "${line}" | cut -d':' -f1)"
+          rest="$(echo "${line}" | cut -d':' -f2- | sed 's/\s${WHITESPACE_SPLIT}//')"
 
-        case "${line}" in
-          Number*)
-            # black magic
-            rest="$(echo "${rest}" | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta')"
-            rest="\e[48;5;19m${rest}"
-            ;;
-          Archive)
-            rest_color="${STYLE_NORMAL}"
-            ;;
-          Time*)
-            rest_color="${STYLE_NORMAL}"
-            ;;
-          *)
-            rest_color="${STYLE_BOLD}"
-            ;;
-        esac
+          case "${line}" in
+            Number*)
+              # black magic
+              rest="$(echo "${rest}" | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta')"
+              rest="\e[48;5;19m${rest}"
+              ;;
+            Archive)
+              rest_color="${STYLE_NORMAL}"
+              export DELIM=''
+              ;;
+            Time*)
+              rest_color="${STYLE_NORMAL}"
+              ;;
+            *)
+              rest_color="${STYLE_BOLD}"
+              ;;
+          esac
 
-        printf "%-${FIRST_COLUMN}s" "${first}"
+          printf "%-${FIRST_COLUMN}s" "${first}"
 
-        say_color "${rest_color}" "${rest}"
-      else
-        color="$(display_color "${line}")"
-        say_color "${color}" "${line}" | tr ':' ' '
+          say_color "${rest_color}" "${rest}"
+        else
+          color="$(display_color "${line}")"
+          say_color "${color}" "${line}" | tr ':' ' '
+        fi
       fi
     fi
-  fi
-done < "${INFILE}"
+  done < "${INFILE}"
+}
