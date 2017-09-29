@@ -70,7 +70,7 @@ $COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER $RESET_TEXT
 
 echo
 
-helpers=( weather )
+helpers=( weather add-borg-to-motd )
 
 for script in "${helpers[@]}" ; do
   HELPER="${THISDIR}/${script}"
