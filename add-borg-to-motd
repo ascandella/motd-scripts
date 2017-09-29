@@ -14,15 +14,16 @@ output_in_columns() {
   while read -r line ; do
     local first
     first="$(echo "${line}" | cut -d' ' -f1)"
-    local rest
-    rest="$(echo "${line}" | tr -s ' ' | cut -d' ' -f2-)"
+		local readonly row1_width=size=${#first}
+    padding=$((TARGET_WIDTH - row1_width))
+    rest="$(echo "${line}" | tr -s ' ' | cut -d' ' -f2)"
     printf "%-${FIRST_COLUMN}s" "${first}"
+		printf "%-${padding}s" " "
     echo "${rest}"
   done <<< "${1}"
 }
 
 display_borg() {
-  set +e
   BORG_OUTPUT="$( \
     "${BORG}" \
     list \
@@ -33,7 +34,6 @@ display_borg() {
   readonly local SALL_GOOD=$?
   set -e
 
-  set -x
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
 
@@ -51,8 +51,6 @@ display_borg() {
     "${EXTRACT}" "${BORG_OUT}"
     reset_color
   fi
-
-  set +x
 }
 
 display_borg

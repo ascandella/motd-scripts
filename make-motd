@@ -65,8 +65,8 @@ header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR
 #fi
 
 echo -e "
-$COLOR_COLUMN- Disk space HOME${RESET_TEXT}......${COLOR_GREEN}$HOME remaining $RESET_TEXT
-$COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER $RESET_TEXT"
+ $COLOR_COLUMN- Disk space HOME${RESET_TEXT}      ${COLOR_GREEN}$HOME remaining $RESET_TEXT
+ $COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER $RESET_TEXT"
 
 echo
 
