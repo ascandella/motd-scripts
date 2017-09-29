@@ -53,11 +53,11 @@ USER="$(whoami)"
 HOSTNAME="$(uname -n)"
 
 # somehowe, we can may this dynamic in the future.
-TARGET_WIDTH=80
+export TARGET_WIDTH=80
 
 display_column1() {
-  local readonly spacing=printf("%-$((FIRST_COLUMN)))"
-  printf " ${COLOR_COLUMN}- s${RESET_TEXT}" "${1}"
+  printf " ${COLOR_COLUMN}- %-$((FIRST_COLUMN - 5))s${RESET_TEXT}" "${1}"
+  printf " ${RESET_TEXT}" "${1}"
 }
 
 display_column2() {

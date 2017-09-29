@@ -59,20 +59,20 @@ header_1 'Processes' "${PSA} running"
 header_1 'System uptime' "$upDays days $upHours hours $upMins minutes $upSecs seconds"
 header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on"
 
+
+#if [[ "${USERS}" < 2 ]] ;; then
+  ## TODO
+#fi
+
+echo -e "
+$COLOR_COLUMN- Disk space HOME${RESET_TEXT}......${COLOR_GREEN}$HOME remaining $RESET_TEXT
+$COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER $RESET_TEXT"
+
 echo
 
-user_color="$)COLOR_
-$COLOR_COLUMN- Disk space HOME$RESET_TEXT.....$COLOR_RED $HOME remaining $RESET_TEXT
-if [[ "{USERS}" < 2 ]] ;; then
+helpers=( weather )
 
-fi
-
-$COLOR_COLUMN- Current user${RESET_TEXT}        ${COLOR_GREEN} $USER
-$RESET_TEXT"
-
-helpers(add-borg-to-motd-weather)
-
-for script in $helpers[@] ; do
+for script in "${helpers[@]}" ; do
   HELPER="${THISDIR}/${script}"
   if [[ -x "${HELPER}" ]] ; then
     "${HELPER}"
