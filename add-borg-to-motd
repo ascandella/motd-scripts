@@ -23,7 +23,8 @@ display_borg() {
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
 		for line in "${BORG_OUTPUT[@]}" ; do
-      line_trimmed="$(echo "${line}" | sed -e 's/^[[:space:]]//')"
+      # shellcheck disable=SC2001
+      line_trimmed="$(echo "${line}" | sed -e 's/^[[:space:]]\+//')"
       (export WHITESPACE_BREAK='[ ]+' && break_columns "${line_trimmed}" 2)
     done
   else

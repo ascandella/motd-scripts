@@ -63,24 +63,24 @@ display_column1() {
 
 MULTIPLE_WHITESPACES='[ ]+'
 break_columns() {
-	local
-	WHITESPACE_BREAK="${WHITESPACE_BREAK:-$MULTIPLE_WHITESPACES}"
+	local WHITESPACE_BREAK="${WHITESPACE_BREAK:-$MULTIPLE_WHITESPACES}"
   local max_cols="${2:-3}"
 
   while IFS='' read -r line ; do
     local i=1
     while (( i <= max_cols )) ; do
-      if [[ $i == $max_cols ]] ; then
-        echo ${line}
+      if [[ $i == "${max_cols}" ]] ; then
+        echo "${line}"
         break
       fi
 
-      first="$(echo ${line} | awk -F"${WHITESPACE_BREAK}" '{print $1}')"
-      local col1_width="$(echo "${first}" | wc -c)"
+      first="$(echo "${line}" | awk -F"${WHITESPACE_BREAK}" '{print $1}')"
       printf "%-${FIRST_COLUMN}s" "${first}"
-      printf "%-${padding}s" " "
       (( i += 1 ))
-      line="$(echo ${line} | cut -c ${col1_width}-)"
+      local col1_width
+      # shellcheck disable=SC2000
+      col1_width="$(echo "${first}" | wc -c)"
+      line="$(echo "${line}" | cut -c "${col1_width}"- | sed -e 's/^[[:space:]]\+//')"
 
       # TODO handle this
     done
