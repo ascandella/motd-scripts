@@ -31,6 +31,9 @@ worth_displaying() {
   if [[ "${1}" =~ hunk ]] ; then
     return 1
   fi
+  if [[ "${1}" =~ output.progress ]] ; then
+    return 1
+  fi
   return 0
 }
 
@@ -63,7 +66,7 @@ borg_extract() {
       if worth_displaying "${line}" ; then
         if has_delim "${line}" ':' &&  [[ ${TABLETIME} == 1 ]] ; then
           first="$(echo "${line}" | cut -d':' -f1)"
-          rest="$(echo "${line}" | cut -d':' -f2- | sed 's/\s${WHITESPACE_SPLIT}//')"
+          rest="$(echo "${line}" | cut -d':' -f2- | sed 's/^[[:space:]]\+//')"
 
           case "${line}" in
             Number*)
@@ -94,3 +97,5 @@ borg_extract() {
     fi
   done < "${INFILE}"
 }
+
+borg_extract
