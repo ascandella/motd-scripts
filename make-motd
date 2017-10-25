@@ -58,8 +58,7 @@ header_1 'Cores Temperature' "${COLOR_YELLOW}${STYLE_BOLD}${TEMPERATURE}"
 header_1 'Processes' "${PSA} running"
 header_1 'System uptime' "$upDays days $upHours hours $upMins minutes $upSecs seconds"
 header_1 'Users' "Currently ${STYLE_BOLD}${NUM_UNIQUE_USERS}${RESET_TEXT}${COLOR_BLUE} user(s) logged on"
-echo -e "
- $COLOR_COLUMN- Disk space HOME${RESET_TEXT}           ${COLOR_GREEN}${HOME} remaining $RESET_TEXT"
+header_1 'Disk space (home)' "${COLOR_GREEN}${HOME} remaining"
 
 echo
 

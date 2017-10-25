@@ -10,22 +10,22 @@ THISDIR="$(dirname "$(readlink -f "$0")")"
 source "${THISDIR}/common"
 
 display_borg() {
-  BORG_OUTPUT="$( \
+  readarray BORG_OUTPUT < <(
     "${BORG}" \
     list \
     --prefix "${HOSTNAME}" \
     --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
     "${REPOSITORY}" | \
     tail -n "${NUM_BACKUPS}" \
-  )"
+  )
   readonly local SALL_GOOD=$?
 
   if [[ $SALL_GOOD -eq 0 ]] ; then
     header "Latest ${STYLE_BOLD}${NUM_BACKUPS} ${RESET_TEXT}${HEADER_COLOR}Backups"
-    while IFS='' read -r line ; do
-      line=$(trim_whitespace "$@")
-      (export WHITESPACE_SPLIT=' ' && break_columns $@)
-    done <<< "${BORG_OUTPUT}"
+		for line in "${BORG_OUTPUT[@]}" ; do
+      line_trimmed="$(echo "${line}" | sed -e 's/^[[:space:]]//')"
+      (export WHITESPACE_BREAK='[ ]+' && break_columns "${line_trimmed}" 2)
+    done
   else
     say_color "${COLOR_RED}" 'Unable to query backups'
     exit "${SALL_GOOD}"

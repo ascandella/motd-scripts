@@ -62,7 +62,6 @@ borg_extract() {
     if [[ ${WEREDOINGITLIVE} == 1 ]] ; then
       if worth_displaying "${line}" ; then
         if has_delim "${line}" ':' &&  [[ ${TABLETIME} == 1 ]] ; then
-					set +x
           first="$(echo "${line}" | cut -d':' -f1)"
           rest="$(echo "${line}" | cut -d':' -f2- | sed 's/\s${WHITESPACE_SPLIT}//')"
 
