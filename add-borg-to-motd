@@ -13,6 +13,7 @@ display_borg() {
   readarray BORG_OUTPUT < <(
     "${BORG}" \
     list \
+    --remote-path /usr/local/bin/borg \
     --prefix "${HOSTNAME}" \
     --list-format '{user:6}{TAB}{path}{size:8d}{NEWLINE}' \
     "${REPOSITORY}" | \
