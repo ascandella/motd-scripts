@@ -25,15 +25,12 @@ fi
 
 # get rid of some dumb shit
 worth_displaying() {
-  if [[ "${1}" =~ fingerprint ]] ; then
-    return 1
-  fi
-  if [[ "${1}" =~ hunk ]] ; then
-    return 1
-  fi
-  if [[ "${1}" =~ output.progress ]] ; then
-    return 1
-  fi
+  local _ignores=( fingerprint hunk output.progress Utilization )
+  for _ignore in "${_ignores[@]}" ; do
+    if [[ "${1}" =~ $_ignore ]] ; then
+      return 1
+    fi
+  done
   return 0
 }
 
