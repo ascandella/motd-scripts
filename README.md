@@ -2,7 +2,7 @@
 
 # Fancy MOTD
 
-Note: I run Fedora 26. These scripts may or may not be useful on other distros.
+Note: I run Fedora. These scripts may or may not be useful on other distros.
 
 ![screenshot](https://raw.githubusercontent.com/sectioneight/motd-scripts/screenshots/img/motd.png)
 
