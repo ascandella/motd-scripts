@@ -61,7 +61,7 @@ echo
 #fi
 
 
-helpers=( weather add-borg-to-motd )
+helpers=( weather add-borg-to-motd 40-services 50-fail2ban 60-docker )
 
 for script in "${helpers[@]}" ; do
   HELPER="${THISDIR}/${script}"
