@@ -23,12 +23,6 @@ THISDIR="$(dirname "$(readlink -f "$0")")"
 # shellcheck source=./common
 source "${THISDIR}/common"
 
-# Get dat sweet, sweet logo
-if command -v screenfetch >/dev/null ; then
-  screenfetch
-fi
-
-
 # Variables
 
 # System load
