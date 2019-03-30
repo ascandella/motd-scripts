@@ -6,7 +6,7 @@ green="\e[1;32m"
 red="\e[1;31m"
 undim="\e[0m"
 
-services=("fail2ban" "docker" "plexmediaserver" "caddy" "lighttpd" pihole-FTL)
+services=("fail2ban" "docker" "plexmediaserver" "caddy" "lighttpd" jackett pihole-FTL)
 # sort services
 IFS=$'\n' services=($(sort <<<"${services[*]}"))
 unset IFS
